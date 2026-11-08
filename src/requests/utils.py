@@ -583,10 +583,12 @@ def get_encoding_from_headers(headers: CaseInsensitiveDict[str]) -> str | None:
     if "charset" in params:
         return params["charset"].strip("'\"")
 
-    if "text" in content_type:
+    content_type_lower = content_type.lower()
+
+    if content_type_lower.startswith("text/"):
         return "ISO-8859-1"
 
-    if "application/json" in content_type:
+    if content_type_lower == "application/json":
         # Assume UTF-8 based on RFC 4627: https://www.ietf.org/rfc/rfc4627.txt since the charset was unset
         return "utf-8"
 
